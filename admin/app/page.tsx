@@ -3,7 +3,9 @@ export default function Home() {
     <div className="flex min-h-screen">
       <p className="font-inter">admin</p>
       <br />
-      <p className="font-raleway">hello</p>
+      <p className="font-raleway">hello
+        
+      </p>
     </div>
   );
 }

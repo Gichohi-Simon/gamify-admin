@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @layer utilities {
-    .font-raleway {
-        font-family: var(--font-raleway);
-    }
+  .font-raleway {
+    font-family: var(--font-raleway);
+  }
 
-    .font-inter {
-        font-family: var(--font-inter);
-    }
+  .font-inter {
+    font-family: var(--font-inter);
+  }
 }
