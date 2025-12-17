@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #FFB700;
+  --color-secondary: #E2E8F0;
+  --color-dark: #0F172A;
+}
+
 @layer utilities {
   .font-raleway {
     font-family: var(--font-raleway);
