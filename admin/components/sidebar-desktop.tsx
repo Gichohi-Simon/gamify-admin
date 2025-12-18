@@ -5,8 +5,8 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { sidebarItems } from "./sidebar-nav";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 export function SidebarDesktop() {
   const [collapsed, setCollapsed] = useState(false);
@@ -15,13 +15,13 @@ export function SidebarDesktop() {
   return (
     <aside
       className={cn(
-        "bg-dark font-raleway hidden h-screen flex-col text-white transition-all duration-300 md:flex",
+        "hidden h-screen flex-col bg-gray-900 text-white transition-all duration-300 md:flex",
         collapsed ? "w-16" : "w-64",
       )}
     >
-      <div className="flex h-14 items-center justify-center">
+      <div className="flex h-14 items-center px-4 pt-4">
         {!collapsed && (
-          <span className="font-semibold tracking-wider uppercase">
+          <span className="font-raleway text-primary font-bold tracking-wider capitalize">
             Gamify General Supplies
           </span>
         )}
@@ -38,11 +38,13 @@ export function SidebarDesktop() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium tracking-wider capitalize transition-colors",
-                  active ? "bg-gray-600 text-white" : "hover:bg-accent",
+                  "font-raleway flex items-center gap-3 rounded-md px-3 py-3 text-sm font-medium tracking-wider capitalize transition-colors",
+                  active
+                    ? "bg-gray-600 text-white"
+                    : "hover:bg-accent hover:text-black",
                 )}
               >
-                <Icon className="text-primary h-5 w-5 shrink-0 hover:text-white" />
+                <Icon className="text-primary h-5 w-5 shrink-0" />
                 {!collapsed && item.title}
               </Link>
             );
@@ -50,13 +52,15 @@ export function SidebarDesktop() {
         </nav>
       </ScrollArea>
 
-      <Separator />
-
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="bg-primary m-2 cursor-pointer rounded-md border px-2 py-2 text-xs font-bold tracking-wider text-black capitalize"
+        className="bg-primary m-2 cursor-pointer rounded-md px-2 py-2 text-center text-xs font-bold tracking-wider text-black capitalize"
       >
-        {collapsed ? "open" : "close"}
+        {collapsed ? (
+          <PanelLeftOpen className="h-6 w-6" />
+        ) : (
+          <PanelLeftClose className="h-6 w-6" />
+        )}
       </button>
     </aside>
   );

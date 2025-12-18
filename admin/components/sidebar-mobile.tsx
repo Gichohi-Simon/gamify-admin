@@ -32,7 +32,7 @@ export function SidebarMobile() {
 
       <SheetContent
         side="left"
-        className="bg-dark font-raleway w-64 p-0 text-white"
+        className="font-raleway w-64 bg-gray-900 p-0 text-white"
       >
         <div className="flex h-14 items-center px-4 font-semibold">
           Gamify Supplies

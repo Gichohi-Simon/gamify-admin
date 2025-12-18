@@ -7,7 +7,7 @@
   /* Brand Colors */
   --color-brand-primary: #FFB700;
   --color-brand-secondary: #E2E8F0;
-  --color-brand-dark: #0F172A;
+  --color-brand-surface: #0F172A;
 
   /* Shadcn-style Mappings */
   --color-background: var(--background);
