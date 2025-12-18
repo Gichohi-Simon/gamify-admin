@@ -15,7 +15,7 @@ export function SidebarDesktop() {
   return (
     <aside
       className={cn(
-        "hidden h-screen flex-col bg-gray-900 text-white transition-all duration-300 md:flex",
+        "hidden min-h-screen flex-col bg-gray-900 text-white transition-all duration-300 md:flex",
         collapsed ? "w-16" : "w-64",
       )}
     >
@@ -57,9 +57,9 @@ export function SidebarDesktop() {
         className="bg-primary m-2 cursor-pointer rounded-md px-2 py-2 text-center text-xs font-bold tracking-wider text-black capitalize"
       >
         {collapsed ? (
-          <PanelLeftOpen className="h-6 w-6" />
+          <PanelLeftOpen className="h-4 w-4" />
         ) : (
-          <PanelLeftClose className="h-6 w-6" />
+          <PanelLeftClose className="h-4 w-4" />
         )}
       </button>
     </aside>
