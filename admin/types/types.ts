@@ -21,3 +21,12 @@ export interface AuthState {
   userInfo: userState | null;
   initialized: boolean;
 }
+
+export interface UserData {
+  id: string;
+  username: string;
+  email: string;
+  isAdmin: boolean;
+  createdAt: string;
+  isActive: boolean;
+}

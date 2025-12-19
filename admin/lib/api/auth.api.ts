@@ -1,4 +1,7 @@
-import { loginInitialValues, initialFormValuesInterface } from "../types/types";
+import {
+  loginInitialValues,
+  initialFormValuesInterface,
+} from "../../types/types";
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 export const signIn = async (values: loginInitialValues) => {

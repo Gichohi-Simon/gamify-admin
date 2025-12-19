@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { initialFormValuesInterface } from "@/app/types/types";
+import { initialFormValuesInterface } from "@/types/types";
 import { useSignUp } from "@/hooks/auth";
 
 export default function SignUp() {

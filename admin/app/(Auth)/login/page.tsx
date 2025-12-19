@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/app/store/hooks";
-import { loginInitialValues } from "@/app/types/types";
-import { setCredentials } from "@/app/store/features/authSlice";
+import { useAppDispatch } from "@/store/hooks";
+import { loginInitialValues } from "@/types/types";
+import { setCredentials } from "@/store/features/authSlice";
 import { useSignIn } from "@/hooks/auth";
 
 export default function Login() {
