@@ -48,3 +48,48 @@ export interface ProductResponse {
   totalPages: number;
   products: ProductInterface[];
 }
+
+export interface OrderInterface {
+  id: string;
+  userId: string;
+  itemsPrice: string;
+  shippingPrice: string;
+  taxPrice: string;
+  totalPrice: string;
+  isPaid: boolean;
+  paidAt: string | null;
+  isDelivered: boolean;
+  deliveredAt: string | null;
+  invoiceNumber: string | null;
+  createdAt: string;
+}
+
+export interface OrderItemProduct {
+  name: string;
+  images: string[];
+}
+
+export interface OrderItem {
+  id: string;
+  orderId: string;
+  productId: string;
+  quantity: number;
+  price: string;
+  product: OrderItemProduct;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  itemsPrice: string;
+  shippingPrice: string;
+  taxPrice: string;
+  totalPrice: string;
+  isPaid: boolean;
+  paidAt: string | null;
+  isDelivered: boolean;
+  deliveredAt: string | null;
+  invoiceNumber: string;
+  createdAt: string; // ISO string
+  orderItems: OrderItem[];
+}
