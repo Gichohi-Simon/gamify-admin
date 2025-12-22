@@ -30,3 +30,21 @@ export interface UserData {
   createdAt: string;
   isActive: boolean;
 }
+
+export interface ProductInterface {
+  id: string;
+  name: string;
+  price: number;
+  images: string[];
+  createdAt: string;
+  cloudinary_id: string;
+  description: string;
+  category: string;
+}
+
+export interface ProductResponse {
+  success: boolean;
+  currentPage: number;
+  totalPages: number;
+  products: ProductInterface[];
+}
