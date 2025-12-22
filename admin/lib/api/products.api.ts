@@ -65,3 +65,20 @@ export const createProduct = async (
   const data: { newProduct: ProductInterface } = await response.json();
   return data.newProduct;
 };
+
+export const updateProduct = async (
+  formData: FormData,
+  id: string,
+): Promise<ProductInterface> => {
+  const response = await fetch(`${API}/product/update-product/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    body: formData,
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "failed to update product");
+  }
+  const data: { updatedProduct: ProductInterface } = await response.json();
+  return data.updatedProduct;
+};
