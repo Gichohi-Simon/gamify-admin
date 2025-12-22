@@ -5,7 +5,10 @@ export const getAllUsers = async (): Promise<UserData[]> => {
   const response = await fetch(`${API}/users/allUsers`, {
     credentials: "include",
   });
-  if (!response.ok) throw new Error("failed to fetch users");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "failed to fetch users");
+  }
   const data: { users: UserData[] } = await response.json();
   return data.users;
 };
@@ -14,7 +17,10 @@ export const getSingleUserById = async (id: string): Promise<UserData> => {
   const response = await fetch(`${API}/users/single-user/${id}`, {
     credentials: "include",
   });
-  if (!response.ok) throw new Error("failed to fetch user");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "failed to fetch user");
+  }
   const data: { user: UserData } = await response.json();
   return data.user;
 };
@@ -23,7 +29,12 @@ export const getBannedUsers = async (): Promise<UserData[]> => {
   const response = await fetch(`${API}/users/getDeletedAccounts`, {
     credentials: "include",
   });
-  if (!response.ok) throw new Error("failed to fetch banned users");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to fetch banned users",
+    );
+  }
   const data: { deletedAccounts: UserData[] } = await response.json();
   return data.deletedAccounts;
 };
@@ -34,7 +45,10 @@ export const banUserFromPlatform = async (id: string): Promise<UserData> => {
     credentials: "include",
     headers: { "Content-Type": "application/json" },
   });
-  if (!response.ok) throw new Error("failed to ban user");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "failed to ban user");
+  }
   const data: { deletedUser: UserData } = await response.json();
   return data.deletedUser;
 };
@@ -45,7 +59,10 @@ export const restoreBannedUser = async (id: string): Promise<UserData> => {
     credentials: "include",
     headers: { "Content-Type": "application/json" },
   });
-  if (!response.ok) throw new Error("failed to restore user");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "failed to restore user");
+  }
   const data: { restoredAccount: UserData } = await response.json();
   return data.restoredAccount;
 };
@@ -56,7 +73,12 @@ export const makeUserAnAdmin = async (id: string): Promise<UserData> => {
     credentials: "include",
     headers: { "Content-Type": "application/json" },
   });
-  if (!response.ok) throw new Error("failed to make user an admin");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to make user an admin",
+    );
+  }
   const data: { user: UserData } = await response.json();
   return data.user;
 };
@@ -69,7 +91,12 @@ export const revokeUserAdminPriviledge = async (
     credentials: "include",
     headers: { "Content-Type": "application/json" },
   });
-  if (!response.ok) throw new Error("failed to remove user as an admin");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to remove user as an admin",
+    );
+  }
   const data: { user: UserData } = await response.json();
   return data.user;
 };
