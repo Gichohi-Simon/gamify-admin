@@ -13,7 +13,10 @@ export const getAllProducts = async ({
   const response = await fetch(`${API}/product/all-products?${params}`, {
     cache: "no-store",
   });
-  if (!response.ok) throw new Error("failed to fetch products");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "failed to fetch products");
+  }
   const data = await response.json();
   return data;
 };
@@ -24,12 +27,17 @@ export const getSingleProduct = async (
   const response = await fetch(`${API}/product/${id}`, {
     cache: "no-store",
   });
-  if (!response.ok) throw new Error("failed to fetch single product");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to get single product",
+    );
+  }
   const data: { singleProduct: ProductInterface } = await response.json();
   return data.singleProduct;
 };
 
-export const deleteSingleProduct = async (id: string) => {
+export const deleteSingleProduct = async (id: string): Promise<string> => {
   const response = await fetch(`${API}/product/${id}`, {
     method: "DELETE",
     credentials: "include",
@@ -40,4 +48,20 @@ export const deleteSingleProduct = async (id: string) => {
   }
   const data: { message: string } = await response.json();
   return data.message;
+};
+
+export const createProduct = async (
+  formData: FormData,
+): Promise<ProductInterface> => {
+  const response = await fetch(`${API}/product/create-product`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || "Failed to create product");
+  }
+  const data: { newProduct: ProductInterface } = await response.json();
+  return data.newProduct;
 };

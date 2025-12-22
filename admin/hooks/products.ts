@@ -2,6 +2,7 @@ import {
   getAllProducts,
   getSingleProduct,
   deleteSingleProduct,
+  createProduct,
 } from "@/lib/api/products.api";
 import {
   keepPreviousData,
@@ -32,6 +33,18 @@ export const useDeleteSingleProduct = () => {
 
   return useMutation({
     mutationFn: (id: string) => deleteSingleProduct(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+    },
+  });
+};
+
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["products"],
