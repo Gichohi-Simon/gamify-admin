@@ -1,5 +1,14 @@
-import { getAllProducts, getSingleProduct } from "@/lib/api/products.api";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  getAllProducts,
+  getSingleProduct,
+  deleteSingleProduct,
+} from "@/lib/api/products.api";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export const useProducts = ({ page = 1, limit = 6, query = "" } = {}) => {
   return useQuery({
@@ -15,5 +24,18 @@ export const useGetSingleProduct = (id: string) => {
     queryFn: () => getSingleProduct(id),
     enabled: !!id,
     staleTime: Infinity,
+  });
+};
+
+export const useDeleteSingleProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => deleteSingleProduct(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+    },
   });
 };

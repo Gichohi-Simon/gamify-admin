@@ -28,3 +28,16 @@ export const getSingleProduct = async (
   const data: { singleProduct: ProductInterface } = await response.json();
   return data.singleProduct;
 };
+
+export const deleteSingleProduct = async (id: string) => {
+  const response = await fetch(`${API}/product/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "failed to delete product");
+  }
+  const data: { message: string } = await response.json();
+  return data.message;
+};
