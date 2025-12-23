@@ -1,5 +1,9 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getAllOrders, getUserOrderById } from "@/lib/api/order.api";
+import {
+  getAllOrders,
+  getUserOrderById,
+  getTotalNumberOfOrders,
+} from "@/lib/api/order.api";
 
 export const useGetAllOrders = () => {
   return useQuery({
@@ -14,5 +18,12 @@ export const useGetUserOrderById = (id: string) => {
     queryFn: () => getUserOrderById(id),
     enabled: !!id,
     staleTime: Infinity,
+  });
+};
+
+export const useGetTotalNumberOfOrders = () => {
+  return useQuery({
+    queryKey: ["totalOrders"],
+    queryFn: getTotalNumberOfOrders,
   });
 };

@@ -4,6 +4,7 @@ const API = process.env.NEXT_PUBLIC_API_URL;
 export const getAllOrders = async (): Promise<OrderInterface[]> => {
   const response = await fetch(`${API}/order/allOrders`, {
     credentials: "include",
+    cache: "no-store",
   });
   if (!response.ok) {
     const error = await response.json();
@@ -16,7 +17,23 @@ export const getAllOrders = async (): Promise<OrderInterface[]> => {
 export const getUserOrderById = async (id: string): Promise<Order> => {
   const response = await fetch(`${API}/order/get-user-order-by-id/${id}`, {
     credentials: "include",
+    cache: "no-store",
   });
   const data: { order: Order } = await response.json();
   return data.order;
+};
+
+export const getTotalNumberOfOrders = async (): Promise<number> => {
+  const response = await fetch(`${API}/order/total-orders`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to get total orders",
+    );
+  }
+  const data: { totalOrders: number } = await response.json();
+  return data.totalOrders;
 };
