@@ -90,6 +90,6 @@ export interface Order {
   isDelivered: boolean;
   deliveredAt: string | null;
   invoiceNumber: string;
-  createdAt: string; // ISO string
-  orderItems: OrderItem[];
+  createdAt: string;
+  orderItems?: OrderItem[];
 }

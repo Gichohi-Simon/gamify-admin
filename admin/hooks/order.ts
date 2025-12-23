@@ -1,8 +1,9 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getAllOrders,
   getUserOrderById,
   getTotalNumberOfOrders,
+  markOrderAsDelivered,
 } from "@/lib/api/order.api";
 
 export const useGetAllOrders = () => {
@@ -25,5 +26,17 @@ export const useGetTotalNumberOfOrders = () => {
   return useQuery({
     queryKey: ["totalOrders"],
     queryFn: getTotalNumberOfOrders,
+  });
+};
+
+export const useMarkOrderAsDelivered = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => markOrderAsDelivered(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
   });
 };

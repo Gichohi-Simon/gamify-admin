@@ -37,3 +37,32 @@ export const getTotalNumberOfOrders = async (): Promise<number> => {
   const data: { totalOrders: number } = await response.json();
   return data.totalOrders;
 };
+
+export const getTotalSales = async (): Promise<number> => {
+  const response = await fetch(`${API}/order/total-sales`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || error.message || "faied to get total sales");
+  }
+  const data: { totalSales: number } = await response.json();
+  return data.totalSales;
+};
+
+export const markOrderAsDelivered = async (id: string): Promise<Order> => {
+  const response = await fetch(`${API}/order/mark-as-delivered/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to mark order as delivered",
+    );
+  }
+  const data: { delivered: Order } = await response.json();
+  return data.delivered;
+};
