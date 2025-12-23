@@ -3,6 +3,7 @@ import {
   getAllOrders,
   getUserOrderById,
   getTotalNumberOfOrders,
+  getTotalSales,
   markOrderAsDelivered,
   markOrderAsPaid,
 } from "@/lib/api/order.api";
@@ -27,6 +28,13 @@ export const useGetTotalNumberOfOrders = () => {
   return useQuery({
     queryKey: ["totalOrders"],
     queryFn: getTotalNumberOfOrders,
+  });
+};
+
+export const useGetTotalSales = () => {
+  return useQuery({
+    queryKey: ["totalSales"],
+    queryFn: getTotalSales,
   });
 };
 

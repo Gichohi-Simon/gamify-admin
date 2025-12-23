@@ -37,6 +37,21 @@ export const getSingleProduct = async (
   return data.singleProduct;
 };
 
+export const getTotalProducts = async (): Promise<number> => {
+  const response = await fetch(`${API}/product/get-total-products`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to fetch total products",
+    );
+  }
+  const data: { totalProducts: number } = await response.json();
+  return data.totalProducts;
+};
+
 export const deleteSingleProduct = async (id: string): Promise<string> => {
   const response = await fetch(`${API}/product/${id}`, {
     method: "DELETE",

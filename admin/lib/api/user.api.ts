@@ -25,6 +25,21 @@ export const getSingleUserById = async (id: string): Promise<UserData> => {
   return data.user;
 };
 
+export const getTotalUsers = async (): Promise<number> => {
+  const response = await fetch(`${API}/users/get-total-users`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to get total users",
+    );
+  }
+  const data: { totalUsers: number } = await response.json();
+  return data.totalUsers;
+};
+
 export const getBannedUsers = async (): Promise<UserData[]> => {
   const response = await fetch(`${API}/users/getDeletedAccounts`, {
     credentials: "include",

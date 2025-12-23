@@ -1,6 +1,7 @@
 import {
   getAllProducts,
   getSingleProduct,
+  getTotalProducts,
   deleteSingleProduct,
   createProduct,
   updateProduct,
@@ -31,6 +32,13 @@ export const useGetSingleProduct = (id: string) => {
     queryFn: () => getSingleProduct(id),
     enabled: !!id,
     staleTime: Infinity,
+  });
+};
+
+export const useGetTotalProducts = () => {
+  return useQuery({
+    queryKey: ["totalProducts"],
+    queryFn: getTotalProducts,
   });
 };
 

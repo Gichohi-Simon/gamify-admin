@@ -2,6 +2,7 @@ import {
   getAllUsers,
   getBannedUsers,
   getSingleUserById,
+  getTotalUsers,
   banUserFromPlatform,
   restoreBannedUser,
   makeUserAnAdmin,
@@ -22,6 +23,13 @@ export const useGetSingleUserById = (id: string) => {
     queryFn: () => getSingleUserById(id),
     enabled: !!id,
     staleTime: Infinity,
+  });
+};
+
+export const useGetTotalUsers = () => {
+  return useQuery({
+    queryKey: ["totalUsers"],
+    queryFn: getTotalUsers,
   });
 };
 
