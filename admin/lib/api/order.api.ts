@@ -66,3 +66,19 @@ export const markOrderAsDelivered = async (id: string): Promise<Order> => {
   const data: { delivered: Order } = await response.json();
   return data.delivered;
 };
+
+export const markOrderAsPaid = async (id: string): Promise<Order> => {
+  const response = await fetch(`${API}/order/mark-as-paid/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to mark order as paid",
+    );
+  }
+  const data: { paidProduct: Order } = await response.json();
+  return data.paidProduct;
+};

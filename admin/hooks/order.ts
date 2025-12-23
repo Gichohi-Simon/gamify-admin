@@ -4,6 +4,7 @@ import {
   getUserOrderById,
   getTotalNumberOfOrders,
   markOrderAsDelivered,
+  markOrderAsPaid,
 } from "@/lib/api/order.api";
 
 export const useGetAllOrders = () => {
@@ -33,6 +34,18 @@ export const useMarkOrderAsDelivered = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => markOrderAsDelivered(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
+  });
+};
+
+export const useMarkOrderAsPaid = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => markOrderAsPaid(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["orders"],
