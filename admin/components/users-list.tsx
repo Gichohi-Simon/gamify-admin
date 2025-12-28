@@ -5,13 +5,12 @@ import { useGetAllUsers } from "@/hooks/user";
 export default function UserList() {
   const { data: users, isLoading, error } = useGetAllUsers();
 
-  if (isLoading) return <p className="text-sm text-gray-500">Loading users…</p>;
-  if (error)
-    return <p className="text-sm text-red-500">Failed to load users</p>;
+  if (isLoading) return <p className="mt-4 text-sm">Loading users…</p>;
+  if (error) return <p className="mt-4 text-sm text-red-500">Failed</p>;
 
   return (
-    <div className="shadow-s mt-6 overflow-x-auto rounded-lg border">
-      <table className="font-raleway w-full border-collapse text-left">
+    <div className="relative mt-6 overflow-x-auto rounded-lg border">
+      <table className="font-raleway w-max min-w-full border-collapse text-left">
         <thead className="bg-gray-100">
           <tr className="text-xs font-semibold md:text-sm">
             <th className="px-4 py-3">User</th>
@@ -25,12 +24,12 @@ export default function UserList() {
 
         <tbody>
           {users?.map((user) => (
-            <tr key={user.id} className="border-b transition hover:bg-gray-50">
-              <td className="px-4 py-3 text-xs font-medium md:text-sm">
-                {user.username}
-              </td>
+            <tr key={user.id} className="border-b hover:bg-gray-50">
+              <td className="px-4 py-3 text-xs md:text-sm">{user.username}</td>
 
-              <td className="px-4 py-3 text-xs md:text-sm">{user.email}</td>
+              <td className="max-w-[220px] truncate px-4 py-3 text-xs md:text-sm">
+                {user.email}
+              </td>
 
               <td className="px-4 py-3 text-center">
                 <span
@@ -53,13 +52,13 @@ export default function UserList() {
               </td>
 
               <td className="px-4 py-3 text-center">
-                <button className="rounded-full bg-red-500 px-3 py-1 text-[10px] text-white md:text-xs">
+                <button className="rounded-full bg-red-500 px-3 py-1 text-[10px] whitespace-nowrap text-white">
                   {user.isActive ? "Ban" : "Unban"}
                 </button>
               </td>
 
               <td className="px-4 py-3 text-center">
-                <button className="bg-primary rounded-full px-3 py-1 text-[10px] text-white md:text-xs">
+                <button className="bg-primary rounded-full px-3 py-1 text-[10px] whitespace-nowrap text-white">
                   {user.isAdmin ? "Remove" : "Make"}
                 </button>
               </td>

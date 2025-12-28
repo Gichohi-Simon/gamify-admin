@@ -18,7 +18,7 @@ type UpdateProductVariables = {
   formData: FormData;
 };
 
-export const useProducts = ({ page = 1, limit = 6, query = "" } = {}) => {
+export const useProducts = ({ page = 1, limit = 8, query = "" } = {}) => {
   return useQuery({
     queryKey: ["products", { page, limit, query }] as const,
     queryFn: () => getAllProducts({ page, limit, query }),
