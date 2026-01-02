@@ -11,11 +11,12 @@ export const signIn = async (values: loginInitialValues) => {
     body: JSON.stringify(values),
     headers: { "Content-Type": "application/json" },
   });
+
+  const data = await response.json();
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || error.message || "error signing in");
+    throw new Error(data.message || "error signing in");
   }
-  return response.json();
+  return data;
 };
 
 export const signUp = async (values: initialFormValuesInterface) => {

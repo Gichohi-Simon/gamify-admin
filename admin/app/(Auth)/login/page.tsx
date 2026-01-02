@@ -8,11 +8,12 @@ import { useAppDispatch } from "@/store/hooks";
 import { loginInitialValues } from "@/types/types";
 import { setCredentials } from "@/store/features/authSlice";
 import { useSignIn } from "@/hooks/auth";
+import { toast } from "sonner";
 
 export default function Login() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { mutateAsync } = useSignIn();
+  const { mutateAsync, isPending } = useSignIn();
 
   const initialValues: loginInitialValues = {
     email: "",
@@ -23,15 +24,20 @@ export default function Login() {
     initialValues,
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email").required("email is required"),
+      password: Yup.string().required("password is required"),
     }),
     onSubmit: async (values) => {
       try {
         const data = await mutateAsync(values);
         dispatch(setCredentials({ userInfo: data.user }));
+        toast.success("login successful");
         formik.resetForm();
-        router.push("/dashboard");
-      } catch (error) {
-        console.error(error);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 800);
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "login failed";
+        toast.error(message);
       }
     },
   });
@@ -97,10 +103,11 @@ export default function Login() {
           ) : null}
         </div>
         <button
+          disabled={isPending}
           className="bg-primary mt-8 mb-5 w-full rounded-md py-2 text-xs lowercase md:text-sm"
           type="submit"
         >
-          login
+          {isPending ? "Logging in..." : "login"}
         </button>
 
         <Link
