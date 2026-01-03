@@ -160,25 +160,25 @@
 
 /* Success toast */
 [data-sonner-toast][data-type="success"] {
-  background: #16a34a; /* green-600 */
+  background: #FFB700;
   color: white;
 }
 
 /* Error toast */
 [data-sonner-toast][data-type="error"] {
-  background: #dc2626; /* red-600 */
+  background: #FF0000;
   color: white;
 }
 
 /* Warning toast */
 [data-sonner-toast][data-type="warning"] {
-  background: #f59e0b; /* amber-500 */
+  background: #f59e0b; 
   color: black;
 }
 
 /* Info toast */
 [data-sonner-toast][data-type="info"] {
-  background: #2563eb; /* blue-600 */
+  background: #2563eb;
   color: white;
 }
 

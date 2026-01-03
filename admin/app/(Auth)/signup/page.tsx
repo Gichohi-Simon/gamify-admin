@@ -6,10 +6,11 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { initialFormValuesInterface } from "@/types/types";
 import { useSignUp } from "@/hooks/auth";
+import { toast } from "sonner";
 
 export default function SignUp() {
   const router = useRouter();
-  const { mutateAsync } = useSignUp();
+  const { mutateAsync, isPending } = useSignUp();
 
   const initialValues: initialFormValuesInterface = {
     email: "",
@@ -31,12 +32,16 @@ export default function SignUp() {
 
     onSubmit: async (values) => {
       try {
-        const data = await mutateAsync(values);
-        console.log("data from signup", data);
+        await mutateAsync(values);
+        toast.success("signup successfull");
         formik.resetForm();
-        router.push("/login");
+        setTimeout(() => {
+          router.push("/login");
+        }, 800);
       } catch (error) {
-        console.log(error);
+        const message =
+          error instanceof Error ? error.message : "error signing up";
+        toast.error(message);
       }
     },
   });
@@ -152,10 +157,11 @@ export default function SignUp() {
         </div>
 
         <button
+          disabled={isPending}
           className="bg-primary mt-8 mb-5 w-full rounded-md py-2 text-xs lowercase md:text-sm"
           type="submit"
         >
-          Sign up
+          {isPending ? "loading..." : "sign up"}
         </button>
         <Link
           href="/login"
