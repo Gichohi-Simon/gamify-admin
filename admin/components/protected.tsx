@@ -13,7 +13,7 @@ export default function Protected({ children }: childrenProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!initialized && !userInfo) {
+    if (initialized && !userInfo) {
       router.replace("/login");
     }
   }, [initialized, userInfo, router]);
@@ -26,11 +26,7 @@ export default function Protected({ children }: childrenProps) {
     );
   }
   if (!userInfo) {
-    return (
-      <div className="flex min-h-[60px] items-center justify-center">
-        <p className="text-sm">Redirecting to login...</p>
-      </div>
-    );
+    return null;
   }
   return <>{children}</>;
 }

@@ -16,7 +16,7 @@ export default function AuthProvider() {
           userInfo: data.user,
         }),
       );
-    } else if (!isLoading && !data.user) {
+    } else if (!isLoading && !data?.user) {
       dispatch(setLogout());
     }
   }, [data?.user, dispatch, isLoading]);
