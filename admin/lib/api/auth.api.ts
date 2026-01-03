@@ -25,11 +25,12 @@ export const signUp = async (values: initialFormValuesInterface) => {
     body: JSON.stringify(values),
     headers: { "Content-Type": "application/json" },
   });
+
+  const data = await response.json();
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || error.message || "error signing up");
+    throw new Error(data.message || "error signing up");
   }
-  return response.json();
+  return data;
 };
 
 export const signOut = async () => {
@@ -37,24 +38,20 @@ export const signOut = async () => {
     method: "POST",
     credentials: "include",
   });
+  const data = await response.json();
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || error.message || "logout failed");
+    throw new Error(data.message || "logout failed");
   }
-  return response.json();
+  return data;
 };
 
 export const checkAuth = async () => {
   const response = await fetch(`${API}/auth/check`, {
     credentials: "include",
   });
+  const data = await response.json();
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(
-      error.error ||
-        error.message ||
-        "error checking if user is authtenticated",
-    );
+    throw new Error(data.message || "error checking if user is authtenticated");
   }
-  return response.json();
+  return data;
 };
