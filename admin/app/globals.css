@@ -161,13 +161,13 @@
 /* Success toast */
 [data-sonner-toast][data-type="success"] {
   background: #FFB700;
-  color: white;
+  color: black;
 }
 
 /* Error toast */
 [data-sonner-toast][data-type="error"] {
   background: #FF0000;
-  color: white;
+  color: black;
 }
 
 /* Warning toast */
