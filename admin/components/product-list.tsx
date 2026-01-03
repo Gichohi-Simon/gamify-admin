@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { EyeIcon } from "lucide-react";
 import { ProductInterface } from "@/types/types";
+import SectionTitle from "./section-title";
 
 export default function ProductList({
   products,
@@ -12,9 +13,10 @@ export default function ProductList({
 }) {
   return (
     <div className="mt-6 md:mt-6">
-      <p className="font-raleway mx-[15px] text-lg font-semibold tracking-wider md:mx-5 md:text-xl">
-        Products
-      </p>
+      <div className="px-5">
+        <SectionTitle>products</SectionTitle>
+      </div>
+
       <div className="flex justify-center">
         <div className="mx-[15px] grid w-full grid-cols-2 gap-6 pt-6 pb-10 md:mx-5 md:grid-cols-4 md:gap-10 md:pt-8 md:pb-12">
           {products.map((product) => (

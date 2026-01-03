@@ -1,14 +1,12 @@
 import Protected from "@/components/protected";
 import UserList from "@/components/users-list";
+import SectionTitle from "@/components/section-title";
 
 export default function Users() {
   return (
     <Protected>
       <section className="min-w-0 px-6 py-4">
-        <p className="font-raleway text-lg font-semibold tracking-wider capitalize">
-          user&apos;s list
-        </p>
-
+        <SectionTitle>user&apos;s list</SectionTitle>
         <UserList />
       </section>
     </Protected>
