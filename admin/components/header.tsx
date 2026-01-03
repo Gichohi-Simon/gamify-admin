@@ -31,10 +31,10 @@ export function Header() {
       <div className="flex items-center gap-2">
         <SidebarMobile />
         <div className="hidden flex-col md:flex">
-          <span className="text-sm font-bold tracking-wider">
+          <span className="font-raleway text-sm font-bold tracking-wider capitalize md:text-base">
             {user?.username}
           </span>
-          <span className="text-muted-foreground text-xs">Admin</span>
+          <span className="font-raleway text-xs">{user?.email}</span>
         </div>
       </div>
 
