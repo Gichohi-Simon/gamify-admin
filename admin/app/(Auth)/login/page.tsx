@@ -9,6 +9,7 @@ import { loginInitialValues } from "@/types/types";
 import { setCredentials } from "@/store/features/authSlice";
 import { useSignIn } from "@/hooks/auth";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export default function Login() {
   const router = useRouter();
@@ -107,7 +108,13 @@ export default function Login() {
           className="bg-primary mt-8 mb-5 w-full rounded-md py-2 text-xs lowercase md:text-sm"
           type="submit"
         >
-          {isPending ? "Logging in..." : "login"}
+          {isPending ? (
+            <div className="flex justify-center">
+              <Loader2 className="text-accent h-6 w-6 animate-spin" />
+            </div>
+          ) : (
+            "login"
+          )}
         </button>
 
         <Link

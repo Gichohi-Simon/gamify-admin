@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { initialFormValuesInterface } from "@/types/types";
 import { useSignUp } from "@/hooks/auth";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export default function SignUp() {
   const router = useRouter();
@@ -161,7 +162,13 @@ export default function SignUp() {
           className="bg-primary mt-8 mb-5 w-full rounded-md py-2 text-xs lowercase md:text-sm"
           type="submit"
         >
-          {isPending ? "loading..." : "sign up"}
+          {isPending ? (
+            <div className="flex justify-center">
+              <Loader2 className="text-accent h-6 w-6 animate-spin" />
+            </div>
+          ) : (
+            "sign up"
+          )}
         </button>
         <Link
           href="/login"
