@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { EyeIcon } from "lucide-react";
+import { EyeIcon, PlusCircleIcon } from "lucide-react";
 import { ProductInterface } from "@/types/types";
 import SectionTitle from "./section-title";
 
@@ -13,8 +13,15 @@ export default function ProductList({
 }) {
   return (
     <div className="mt-6 md:mt-6">
-      <div className="px-5">
+      <div className="flex justify-between px-5">
         <SectionTitle>products</SectionTitle>
+        <Link
+          href="/create-product"
+          className="font-raleways bg-primary flex items-center justify-between gap-2 rounded px-2 py-2 lowercase"
+        >
+          <PlusCircleIcon className="h-4 w-4" />
+          <p className="text-xs">create product</p>
+        </Link>
       </div>
 
       <div className="flex justify-center">

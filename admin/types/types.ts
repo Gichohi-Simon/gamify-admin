@@ -93,3 +93,11 @@ export interface Order {
   createdAt: string;
   orderItems?: OrderItem[];
 }
+
+export interface CreateProductFormValues {
+  name: string;
+  price: string;
+  description: string;
+  category: string;
+  images: File[];
+}

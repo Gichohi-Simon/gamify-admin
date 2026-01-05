@@ -15,7 +15,7 @@ export default function SectionTitle({
   return (
     <p
       className={clsx(
-        "font-raleway text-base font-semibold tracking-wider",
+        "font-raleway text-base font-semibold tracking-wider capitalize",
         className,
       )}
     >
