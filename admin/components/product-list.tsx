@@ -16,7 +16,7 @@ export default function ProductList({
       <div className="flex justify-between px-5">
         <SectionTitle>products</SectionTitle>
         <Link
-          href="/create-product"
+          href="/manage-product"
           className="font-raleways bg-primary flex items-center justify-between gap-2 rounded px-2 py-2 lowercase"
         >
           <PlusCircleIcon className="h-4 w-4" />
@@ -37,14 +37,14 @@ export default function ProductList({
                 </span>
 
                 <div className="hover:bg-primary rounded-full border border-black p-2">
-                  <Link href={`/shop/${product.id}`}>
+                  <Link href={`/products/${product.id}`}>
                     <EyeIcon className="size-2 md:size-3" />
                   </Link>
                 </div>
               </div>
 
               <div className="relative mx-auto mt-3 h-20 w-full max-w-20 cursor-pointer overflow-hidden rounded-lg md:h-44 md:max-w-[140px]">
-                <Link href={`/shop/${product.id}`}>
+                <Link href={`/products/${product.id}`}>
                   <Image
                     src={product.images[0]}
                     alt={product.name}

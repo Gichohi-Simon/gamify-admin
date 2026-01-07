@@ -43,7 +43,6 @@ export default function AddProduct() {
         formData.append("price", values.price);
         formData.append("description", values.description);
         formData.append("category", values.category);
-
         values.images.forEach((file) => {
           formData.append("images", file);
         });
