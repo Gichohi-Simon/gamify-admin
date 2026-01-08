@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useGetSingleProduct } from "@/hooks/products";
+import { useGetSingleProduct, useDeleteSingleProduct } from "@/hooks/products";
 import {
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,
@@ -14,15 +14,28 @@ import {
   EditIcon,
 } from "lucide-react";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 export default function ProductDetails() {
   const [selectedImage, setSelectedImage] = useState(0);
 
   const params = useParams();
   const productId = params.id as string;
 
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const { data, isLoading, error } = useGetSingleProduct(productId);
-  console.log("data", data);
+  const { mutateAsync, isPending } = useDeleteSingleProduct();
 
   if (isLoading) return <p className="font-raleway text-center">loading...</p>;
   if (error)
@@ -35,10 +48,23 @@ export default function ProductDetails() {
       prev === data.images.length - 1 ? 0 : prev + 1,
     );
   };
+
   const prevImage = () => {
     setSelectedImage((prev) =>
       prev === 0 ? data.images.length - 1 : prev - 1,
     );
+  };
+
+  const handleDelete = async () => {
+    try {
+      await mutateAsync(productId);
+      toast.success("deleted succesfully");
+      router.push("/products");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "failed to delete product";
+      toast.error(message);
+    }
   };
 
   return (
@@ -105,14 +131,44 @@ export default function ProductDetails() {
           <p className="mt-0.5 text-[6px] font-semibold tracking-wider text-blue-500 md:text-xs">
             price is exclusive of vat
           </p>
-          <div className="mt-5 flex justify-start gap-4">
-            <span className="bg-primary hover:bg-accent flex gap-1 rounded-full px-4 py-2 hover:cursor-pointer hover:text-black">
-              <Trash className="size-4 text-red-600 md:size-4" />
-              <p className="text-[10px] md:text-xs">delete</p>
-            </span>
+          <div className="mt-5 flex gap-4">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <span className="bg-primary hover:bg-accent flex cursor-pointer gap-1 rounded-full px-4 py-2">
+                  <Trash className="size-4 text-red-600" />
+                  <p className="text-[10px] md:text-xs">delete</p>
+                </span>
+              </AlertDialogTrigger>
+
+              <AlertDialogContent className="font-raleway">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-sm">
+                    Are you absolutely sure?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="text-sm">
+                    This action cannot be undone. This will permanently delete
+                    this product.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+
+                <AlertDialogFooter className="font-raleway">
+                  <AlertDialogCancel className="text-xs!">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDelete}
+                    disabled={isPending}
+                    className="bg-red-600 text-xs! hover:bg-red-700"
+                  >
+                    {isPending ? "Deleting..." : "Delete"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
             <Link href={`/manage-product/${data.id}`}>
-              <span className="bg-primary hover:bg-accent flex gap-1 rounded-full px-4 py-2 hover:cursor-pointer hover:text-black">
-                <EditIcon className="size-4 text-green-600 hover:cursor-pointer md:size-4" />
+              <span className="bg-primary hover:bg-accent flex cursor-pointer gap-1 rounded-full px-4 py-2">
+                <EditIcon className="size-4 text-green-600" />
                 <p className="text-[10px] md:text-xs">edit</p>
               </span>
             </Link>

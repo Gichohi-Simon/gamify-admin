@@ -54,7 +54,7 @@ export const getTotalProducts = async (): Promise<number> => {
 
 export const deleteSingleProduct = async (id: string): Promise<string> => {
   const response = await fetch(`${API}/product/${id}`, {
-    method: "DELETE",
+    method: "PATCH",
     credentials: "include",
   });
   if (!response.ok) {
