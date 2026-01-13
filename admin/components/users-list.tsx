@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetAllUsers } from "@/hooks/user";
+import Link from "next/link";
 
 export default function UserList() {
   const { data: users, isLoading, error } = useGetAllUsers();
@@ -17,8 +18,7 @@ export default function UserList() {
             <th className="px-4 py-3">Email</th>
             <th className="px-4 py-3 text-center">Status</th>
             <th className="px-4 py-3 text-center">Role</th>
-            <th className="px-4 py-3 text-center">Ban</th>
-            <th className="px-4 py-3 text-center">Admin</th>
+            <th className="px-4 py-3 text-center">Actions</th>
           </tr>
         </thead>
 
@@ -52,15 +52,12 @@ export default function UserList() {
               </td>
 
               <td className="px-4 py-3 text-center">
-                <button className="rounded-full bg-red-500 px-3 py-1 text-[10px] whitespace-nowrap text-white">
-                  {user.isActive ? "Ban" : "Unban"}
-                </button>
-              </td>
-
-              <td className="px-4 py-3 text-center">
-                <button className="bg-primary rounded-full px-3 py-1 text-[10px] whitespace-nowrap text-white">
-                  {user.isAdmin ? "Remove" : "Make"}
-                </button>
+                <Link
+                  className="rounded-lg bg-green-600 px-3 py-2 text-xs whitespace-nowrap text-white"
+                  href={`/users/${user.id}`}
+                >
+                  view
+                </Link>
               </td>
             </tr>
           ))}

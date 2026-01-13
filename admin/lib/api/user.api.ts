@@ -1,4 +1,4 @@
-import { UserData } from "../../types/types";
+import { UserData, SingleUser } from "../../types/types";
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 export const getAllUsers = async (): Promise<UserData[]> => {
@@ -13,7 +13,9 @@ export const getAllUsers = async (): Promise<UserData[]> => {
   return data.users;
 };
 
-export const getSingleUserById = async (id: string): Promise<UserData> => {
+export const getSingleUserById = async (
+  id: string,
+): Promise<{ user: SingleUser }> => {
   const response = await fetch(`${API}/users/single-user/${id}`, {
     credentials: "include",
   });
@@ -21,8 +23,8 @@ export const getSingleUserById = async (id: string): Promise<UserData> => {
     const error = await response.json();
     throw new Error(error.error || error.message || "failed to fetch user");
   }
-  const data: { user: UserData } = await response.json();
-  return data.user;
+  const data = await response.json();
+  return data;
 };
 
 export const getTotalUsers = async (): Promise<number> => {

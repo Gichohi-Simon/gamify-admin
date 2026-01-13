@@ -31,6 +31,30 @@ export interface UserData {
   isActive: boolean;
 }
 
+export interface DeliveryAddress {
+  companyName: string;
+  street: string;
+  floorNumber: string | null;
+  city: string | null;
+  postalCode: string;
+  phoneNumber: string | null;
+}
+
+export interface SingleUser {
+  id: string;
+  username: string;
+  email: string;
+  isAdmin: boolean;
+  isActive: boolean;
+  isBanned: boolean;
+  createdAt: string;
+  deliveryAddress: DeliveryAddress | null;
+}
+
+export interface GetSingleUserResponse {
+  user: SingleUser;
+}
+
 export interface ProductInterface {
   id: string;
   name: string;
