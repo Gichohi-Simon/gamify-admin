@@ -71,11 +71,14 @@ export const banUserFromPlatform = async (id: string): Promise<UserData> => {
 };
 
 export const restoreBannedUser = async (id: string): Promise<UserData> => {
-  const response = await fetch(`${API}/users/ban-user-from-platform/${id}`, {
-    method: "PATCH",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await fetch(
+    `${API}/users/restore-banned-user-to-platform/${id}`,
+    {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    },
+  );
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.error || error.message || "failed to restore user");
