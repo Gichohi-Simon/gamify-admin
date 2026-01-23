@@ -9,10 +9,14 @@ import {
   useRevokeUserAsAdmin,
 } from "@/hooks/user";
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, ArrowLeftCircleIcon, ArrowLeftCircle } from "lucide-react";
 
 export default function UserDetails() {
   const params = useParams();
   const id = params.id as string;
+  const router = useRouter();
 
   const { data, isLoading, error, refetch } = useGetSingleUserById(id);
 
@@ -77,11 +81,21 @@ export default function UserDetails() {
 
   return (
     <div className="font-raleway mx-auto max-w-4xl space-y-6 p-6">
-      <h1 className="mb-4 text-2xl font-bold text-gray-800 sm:text-xl">
-        User Details
-      </h1>
+      <div className="flex justify-between">
+        <h1 className="mb-4 text-2xl font-bold text-gray-800 sm:text-xl">
+          User Details
+        </h1>
+        <div
+          className="hover:bg-primary flex h-8 items-center gap-2 rounded-sm bg-black px-4 hover:cursor-pointer"
+          onClick={() => router.back()}
+        >
+          <ArrowLeftCircle className="h-4 w-4 text-white hover:text-black" />
+          <span className="text-xs font-semibold tracking-wider text-white capitalize hover:cursor-pointer hover:text-black">
+            back
+          </span>
+        </div>
+      </div>
 
-      {/* User Info Card */}
       <div className="space-y-2 rounded-xl border border-gray-200 bg-white p-6 shadow-md">
         <h2 className="mb-4 text-xl font-semibold text-gray-700 sm:text-lg">
           Account Info
@@ -141,7 +155,6 @@ export default function UserDetails() {
         </div>
       </div>
 
-      {/* Delivery Address Card */}
       {user.deliveryAddress ? (
         <div className="rounded-xl border border-gray-200 bg-white p-6 text-sm shadow-md sm:text-xs">
           <h2 className="mb-4 text-xl font-semibold text-gray-700 sm:text-lg">
