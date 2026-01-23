@@ -9,9 +9,8 @@ import {
   useRevokeUserAsAdmin,
 } from "@/hooks/user";
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowLeftCircleIcon, ArrowLeftCircle } from "lucide-react";
+import { ArrowLeftCircle } from "lucide-react";
 
 export default function UserDetails() {
   const params = useParams();
