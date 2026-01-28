@@ -6,6 +6,7 @@ import { useGetUserOrderById } from "@/hooks/order";
 import { ArrowLeftCircleIcon } from "lucide-react";
 import { OrderItem } from "@/types/types";
 import Protected from "@/components/protected";
+import { useMarkOrderAsDelivered, useMarkOrderAsPaid } from "@/hooks/order";
 
 export default function OrderDetailsPage() {
   const params = useParams();
@@ -16,6 +17,9 @@ export default function OrderDetailsPage() {
     isLoading,
     isError,
   } = useGetUserOrderById(orderId);
+  const { mutateAsync: markDelivered, isPending: delivering } =
+    useMarkOrderAsDelivered();
+  const { mutateAsync: markPaid, isPending: paying } = useMarkOrderAsPaid();
 
   if (isLoading)
     return (
@@ -226,6 +230,36 @@ export default function OrderDetailsPage() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="mt-6 flex gap-3">
+            {singleOrder.isDelivered ? (
+              <button className="rounded-full bg-red-500 px-6 py-2 text-xs font-bold hover:cursor-pointer">
+                mark as not delivered
+              </button>
+            ) : (
+              <button
+                className="bg-primary rounded-full px-6 py-2 text-xs font-bold hover:cursor-pointer"
+                onClick={() => markDelivered(singleOrder.id)}
+                disabled={delivering}
+              >
+                mark as delivered
+              </button>
+            )}
+
+            {singleOrder.isPaid ? (
+              <button className="rounded-full bg-red-500 px-6 py-2 text-xs font-bold hover:cursor-pointer">
+                mark as not paid
+              </button>
+            ) : (
+              <button
+                className="rounded-full bg-green-500 px-6 py-2 text-xs font-bold hover:cursor-pointer"
+                disabled={paying}
+                onClick={() => markPaid(singleOrder.id)}
+              >
+                mark as paid
+              </button>
+            )}
           </div>
         </div>
       </div>
