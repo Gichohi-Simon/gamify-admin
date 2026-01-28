@@ -4,20 +4,8 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { useGetUserOrderById } from "@/hooks/order";
 import { ArrowLeftCircleIcon } from "lucide-react";
-import { OrderInterface } from "@/types/types";
+import { OrderItem } from "@/types/types";
 import Protected from "@/components/protected";
-
-type OrderItemType = {
-  id: string;
-  orderId: string;
-  productId: string;
-  quantity: number;
-  price: string | number;
-  product: {
-    name: string;
-    images: string[];
-  };
-};
 
 export default function OrderDetailsPage() {
   const params = useParams();
@@ -28,7 +16,6 @@ export default function OrderDetailsPage() {
     isLoading,
     isError,
   } = useGetUserOrderById(orderId);
-  console.log("single order", singleOrder);
 
   if (isLoading)
     return (
@@ -121,7 +108,7 @@ export default function OrderDetailsPage() {
             </div>
 
             <div className="space-y-3 md:col-span-2">
-              {singleOrder.orderItems?.map((orderItem: OrderItemType) => (
+              {singleOrder.orderItems?.map((orderItem: OrderItem) => (
                 <div
                   key={orderItem.id}
                   className="border-primary flex items-center gap-4 rounded-xl border-l-4 bg-white p-4 shadow-md transition hover:shadow-lg"
@@ -158,6 +145,86 @@ export default function OrderDetailsPage() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div className="border-primary rounded-xl border-l-4 bg-white p-5 shadow-lg md:col-span-3">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <div className="text-[10px] tracking-wide text-gray-500 uppercase md:text-xs">
+                    Customer & Delivery
+                  </div>
+                  <div className="text-xs font-bold text-gray-800 md:text-sm">
+                    {singleOrder.user.username}
+                  </div>
+                  <div className="mt-1 text-[10px] text-gray-500 md:text-xs">
+                    {singleOrder.user.email}
+                  </div>
+                </div>
+
+                <span className="rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-700 md:text-xs">
+                  Order ID: {singleOrder.id.slice(0, 8).toUpperCase()}
+                </span>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <div className="text-[10px] tracking-wide text-gray-500 uppercase md:text-xs">
+                    Contact
+                  </div>
+
+                  <div className="mt-3 space-y-2 text-xs md:text-sm">
+                    <div className="flex justify-between gap-3">
+                      <span className="text-gray-500">Phone</span>
+                      <span className="font-medium text-gray-800">
+                        {singleOrder.user.deliveryAddress?.phoneNumber ?? "—"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <div className="text-[10px] tracking-wide text-gray-500 uppercase md:text-xs">
+                    Delivery Address
+                  </div>
+
+                  <div className="mt-3 space-y-2 text-xs md:text-sm">
+                    <div className="flex justify-between gap-3">
+                      <span className="text-gray-500">Company</span>
+                      <span className="font-medium text-gray-800">
+                        {singleOrder.user.deliveryAddress?.companyName ?? "—"}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      <span className="text-gray-500">Street</span>
+                      <span className="font-medium text-gray-800">
+                        {singleOrder.user.deliveryAddress?.street ?? "—"}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      <span className="text-gray-500">Floor</span>
+                      <span className="font-medium text-gray-800">
+                        {singleOrder.user.deliveryAddress?.floorNumber ?? "—"}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      <span className="text-gray-500">City</span>
+                      <span className="font-medium text-gray-800">
+                        {singleOrder.user.deliveryAddress?.city ?? "—"}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      <span className="text-gray-500">Postal Code</span>
+                      <span className="font-medium text-gray-800">
+                        {singleOrder.user.deliveryAddress?.postalCode ?? "—"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

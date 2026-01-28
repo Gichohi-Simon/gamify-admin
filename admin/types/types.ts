@@ -22,6 +22,17 @@ export interface AuthState {
   initialized: boolean;
 }
 
+export interface DeliveryAddress {
+  id: string;
+  companyName: string;
+  street: string;
+  floorNumber: string | null;
+  city: string | null;
+  postalCode: string;
+  phoneNumber: string | null;
+  userId: string;
+}
+
 export interface UserData {
   id: string;
   username: string;
@@ -29,25 +40,10 @@ export interface UserData {
   isAdmin: boolean;
   createdAt: string;
   isActive: boolean;
-}
-
-export interface DeliveryAddress {
-  companyName: string;
-  street: string;
-  floorNumber: string | null;
-  city: string | null;
-  postalCode: string;
-  phoneNumber: string | null;
-}
-
-export interface SingleUser {
-  id: string;
-  username: string;
-  email: string;
-  isAdmin: boolean;
-  isActive: boolean;
   isBanned: boolean;
-  createdAt: string;
+}
+
+export interface SingleUser extends UserData {
   deliveryAddress: DeliveryAddress | null;
 }
 
@@ -61,9 +57,10 @@ export interface ProductInterface {
   price: number;
   images: string[];
   createdAt: string;
-  cloudinary_id: string;
+  cloudinary_ids: string[];
   description: string;
   category: string;
+  isActive: boolean;
 }
 
 export interface ProductResponse {
@@ -102,6 +99,13 @@ export interface OrderItem {
   product: OrderItemProduct;
 }
 
+export interface OrderUser {
+  id: string;
+  username: string;
+  email: string;
+  deliveryAddress: DeliveryAddress | null;
+}
+
 export interface Order {
   id: string;
   userId: string;
@@ -116,6 +120,7 @@ export interface Order {
   invoiceNumber: string;
   createdAt: string;
   orderItems?: OrderItem[];
+  user: OrderUser;
 }
 
 export interface CreateProductFormValues {
