@@ -2,23 +2,36 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { useGetUserOrderById } from "@/hooks/order";
-import { ArrowLeftCircleIcon } from "lucide-react";
-import { OrderItem } from "@/types/types";
 import Protected from "@/components/protected";
-import { useMarkOrderAsDelivered, useMarkOrderAsPaid } from "@/hooks/order";
+import {
+  useGetUserOrderById,
+  useMarkOrderAsDelivered,
+  useMarkOrderAsPaid,
+} from "@/hooks/order";
+import { OrderItem } from "@/types/types";
+import {
+  ArrowLeftCircleIcon,
+  CreditCard,
+  Truck,
+  Check,
+  X,
+  Loader2,
+} from "lucide-react";
 
 export default function OrderDetailsPage() {
   const params = useParams();
   const router = useRouter();
   const orderId = params.id as string;
+
   const {
     data: singleOrder,
     isLoading,
     isError,
   } = useGetUserOrderById(orderId);
+
   const { mutateAsync: markDelivered, isPending: delivering } =
     useMarkOrderAsDelivered();
+
   const { mutateAsync: markPaid, isPending: paying } = useMarkOrderAsPaid();
 
   if (isLoading)
@@ -27,6 +40,7 @@ export default function OrderDetailsPage() {
         Loading...
       </div>
     );
+
   if (isError || !singleOrder)
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -45,6 +59,7 @@ export default function OrderDetailsPage() {
             >
               <ArrowLeftCircleIcon className="h-3 w-3 md:h-5 md:w-5" /> Back
             </button>
+
             <div className="text-right">
               <div className="text-xs text-gray-500">Placed</div>
               <div className="text-xs font-semibold md:text-sm">
@@ -63,6 +78,7 @@ export default function OrderDetailsPage() {
                   {singleOrder.invoiceNumber}
                 </div>
               </div>
+
               <div className="space-y-4 text-xs md:text-sm">
                 <div className="flex justify-between text-gray-700">
                   <span className="text-gray-500">Items Price</span>
@@ -70,43 +86,103 @@ export default function OrderDetailsPage() {
                     KSh {Number(singleOrder.itemsPrice).toLocaleString()}
                   </span>
                 </div>
+
                 <div className="flex justify-between text-gray-700">
                   <span className="text-gray-500">Tax</span>
                   <span className="font-medium">
                     KSh {Number(singleOrder.taxPrice).toLocaleString()}
                   </span>
                 </div>
+
                 <div className="flex justify-between text-gray-700">
                   <span className="text-gray-500">Shipping</span>
                   <span className="font-medium">
                     KSh {Number(singleOrder.shippingPrice).toLocaleString()}
                   </span>
                 </div>
+
                 <div className="flex items-center justify-between border-t pt-3 font-semibold text-gray-800">
                   <span>Total</span>
                   <span className="text-xs md:text-sm">
                     KSh {Number(singleOrder.totalPrice).toLocaleString()}
                   </span>
                 </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span
-                    className={`rounded-full px-3 py-1 text-[10px] font-semibold md:text-xs ${
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!singleOrder.isPaid) markPaid(singleOrder.id);
+                    }}
+                    disabled={paying || singleOrder.isPaid}
+                    className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold transition md:text-xs ${
                       singleOrder.isPaid
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
+                        ? "border-green-200 bg-green-50 text-green-700"
+                        : "border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
+                    } ${
+                      paying || singleOrder.isPaid
+                        ? "cursor-not-allowed opacity-70"
+                        : "hover:cursor-pointer"
+                    } `}
                   >
-                    {singleOrder.isPaid ? "Paid" : "Payment Pending"}
-                  </span>
-                  <span
-                    className={`rounded-full px-3 py-1 text-[10px] font-semibold md:text-xs ${
+                    <CreditCard className="h-4 w-4" />
+                    <span>Payment:</span>
+                    <span className="font-bold">
+                      {singleOrder.isPaid ? "Paid" : "Pending"}
+                    </span>
+
+                    {paying ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : singleOrder.isPaid ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <X className="h-4 w-4" />
+                    )}
+
+                    {!singleOrder.isPaid && !paying && (
+                      <span className="ml-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] font-bold">
+                        Mark paid
+                      </span>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!singleOrder.isDelivered)
+                        markDelivered(singleOrder.id);
+                    }}
+                    disabled={delivering || singleOrder.isDelivered}
+                    className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold transition md:text-xs ${
                       singleOrder.isDelivered
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}
+                        ? "border-green-200 bg-green-50 text-green-700"
+                        : "border-yellow-200 bg-yellow-50 text-yellow-700 hover:bg-yellow-100"
+                    } ${
+                      delivering || singleOrder.isDelivered
+                        ? "cursor-not-allowed opacity-70"
+                        : "hover:cursor-pointer"
+                    } `}
                   >
-                    {singleOrder.isDelivered ? "Delivered" : "Not Delivered"}
-                  </span>
+                    <Truck className="h-4 w-4" />
+                    <span>Delivery:</span>
+                    <span className="font-bold">
+                      {singleOrder.isDelivered ? "Delivered" : "Not delivered"}
+                    </span>
+
+                    {delivering ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : singleOrder.isDelivered ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <X className="h-4 w-4" />
+                    )}
+
+                    {!singleOrder.isDelivered && !delivering && (
+                      <span className="ml-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] font-bold">
+                        Mark delivered
+                      </span>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
@@ -125,6 +201,7 @@ export default function OrderDetailsPage() {
                       className="rounded-md object-cover"
                     />
                   </div>
+
                   <div className="min-w-0 flex-1">
                     <h3 className="text-sm font-semibold tracking-wider text-gray-800 md:text-base">
                       {orderItem.product.name}
@@ -133,6 +210,7 @@ export default function OrderDetailsPage() {
                       Qty: {orderItem.quantity}
                     </p>
                   </div>
+
                   <div className="min-w-[100px] text-right">
                     <div className="text-xs text-gray-500 md:text-sm">
                       Price
@@ -230,36 +308,6 @@ export default function OrderDetailsPage() {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="mt-6 flex gap-3">
-            {singleOrder.isDelivered ? (
-              <button className="rounded-full bg-red-500 px-6 py-2 text-xs font-bold hover:cursor-pointer">
-                mark as not delivered
-              </button>
-            ) : (
-              <button
-                className="bg-primary rounded-full px-6 py-2 text-xs font-bold hover:cursor-pointer"
-                onClick={() => markDelivered(singleOrder.id)}
-                disabled={delivering}
-              >
-                mark as delivered
-              </button>
-            )}
-
-            {singleOrder.isPaid ? (
-              <button className="rounded-full bg-red-500 px-6 py-2 text-xs font-bold hover:cursor-pointer">
-                mark as not paid
-              </button>
-            ) : (
-              <button
-                className="rounded-full bg-green-500 px-6 py-2 text-xs font-bold hover:cursor-pointer"
-                disabled={paying}
-                onClick={() => markPaid(singleOrder.id)}
-              >
-                mark as paid
-              </button>
-            )}
           </div>
         </div>
       </div>
