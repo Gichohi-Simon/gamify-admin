@@ -10,6 +10,17 @@ export interface loginInitialValues {
   password: string;
 }
 
+export type UserRole = "USER" | "ADMIN" | "EMPLOYEE";
+export type AuthProvider = "LOCAL" | "GOOGLE";
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  role: UserRole;
+  authProvider: AuthProvider;
+}
+
 export interface userState {
   id: string;
   email: string;

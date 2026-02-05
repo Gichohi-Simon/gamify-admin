@@ -4,14 +4,18 @@ import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { initialFormValuesInterface } from "@/types/types";
+import { initialFormValuesInterface, User } from "@/types/types";
 import { useSignUp } from "@/hooks/auth";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
+import { useAppDispatch } from "@/store/hooks";
+import { setCredentials } from "@/store/features/authSlice";
 
 export default function SignUp() {
   const router = useRouter();
   const { mutateAsync, isPending } = useSignUp();
+  const dispatch = useAppDispatch();
 
   const initialValues: initialFormValuesInterface = {
     email: "",
@@ -65,6 +69,13 @@ export default function SignUp() {
           </p>
           <p className="text-xs md:text-sm">welcome to gamify, Lullites!</p>
         </div>
+        <GoogleLoginButton
+          onLogin={(user: User) => {
+            dispatch(setCredentials({ userInfo: user }));
+            toast.success("Google login succesful");
+            router.push("/dashboard");
+          }}
+        />
         <div>
           <label htmlFor="email" className="text-xs font-semibold md:text-sm">
             email
