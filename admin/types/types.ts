@@ -48,7 +48,7 @@ export interface UserData {
   id: string;
   username: string;
   email: string;
-  isAdmin: boolean;
+  role: UserRole;
   createdAt: string;
   isActive: boolean;
   isBanned: boolean;

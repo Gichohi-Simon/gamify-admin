@@ -53,7 +53,7 @@ export default function UserDetails() {
   const toggleAdmin = async () => {
     setAdminLoading(true);
     try {
-      if (user.isAdmin) {
+      if (user.role === "ADMIN") {
         await revokeAdminMutation.mutateAsync(user.id);
       } else {
         await makeAdminMutation.mutateAsync(user.id);
@@ -111,19 +111,19 @@ export default function UserDetails() {
           </p>
           <p className="flex items-center gap-2">
             <span className="font-semibold">Admin:</span>{" "}
-            {user.isAdmin ? "Yes" : "No"}
+            {user.role === "ADMIN" ? "Yes" : "No"}
             <button
               onClick={toggleAdmin}
               disabled={adminLoading}
               className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
-                user.isAdmin
+                user.role === "ADMIN"
                   ? "bg-red-500 hover:bg-red-600"
                   : "bg-green-500 hover:bg-green-600"
               } transition-colors duration-200`}
             >
               {adminLoading
                 ? "Processing..."
-                : user.isAdmin
+                : user.role === "ADMIN"
                   ? "Remove Admin"
                   : "Make Admin"}
             </button>

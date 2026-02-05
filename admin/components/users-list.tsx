@@ -44,10 +44,12 @@ export default function UserList() {
               <td className="px-4 py-3 text-center">
                 <span
                   className={`rounded px-2 py-1 text-[10px] md:text-xs ${
-                    user.isAdmin ? "bg-blue-400 text-white" : "bg-gray-300"
+                    user.role === "ADMIN"
+                      ? "bg-blue-400 text-white"
+                      : "bg-gray-300"
                   }`}
                 >
-                  {user.isAdmin ? "Admin" : "User"}
+                  {user.role === "ADMIN" ? "Admin" : "User"}
                 </span>
               </td>
 
