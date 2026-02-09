@@ -25,8 +25,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useAppSelector } from "@/store/hooks";
 
 export default function ProductDetails() {
+  const user = useAppSelector((state) => state?.auth.userInfo);
   const [selectedImage, setSelectedImage] = useState(0);
 
   const params = useParams();
@@ -131,48 +133,52 @@ export default function ProductDetails() {
           <p className="mt-0.5 text-[6px] font-semibold tracking-wider text-blue-500 md:text-xs">
             price is exclusive of vat
           </p>
-          <div className="mt-5 flex gap-4">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
+          {user?.role === "ADMIN" ? (
+            <div className="mt-5 flex gap-4">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <span className="bg-primary hover:bg-accent flex cursor-pointer gap-1 rounded-full px-4 py-2">
+                    <Trash className="size-4 text-red-600" />
+                    <p className="text-[10px] md:text-xs">delete</p>
+                  </span>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent className="font-raleway">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-sm">
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-sm">
+                      This action cannot be undone. This will permanently delete
+                      this product.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter className="font-raleway">
+                    <AlertDialogCancel className="text-xs!">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      disabled={isPending}
+                      className="bg-red-600 text-xs! hover:bg-red-700"
+                    >
+                      {isPending ? "Deleting..." : "Delete"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              <Link href={`/manage-product/${data.id}`}>
                 <span className="bg-primary hover:bg-accent flex cursor-pointer gap-1 rounded-full px-4 py-2">
-                  <Trash className="size-4 text-red-600" />
-                  <p className="text-[10px] md:text-xs">delete</p>
+                  <EditIcon className="size-4 text-green-600" />
+                  <p className="text-[10px] md:text-xs">edit</p>
                 </span>
-              </AlertDialogTrigger>
-
-              <AlertDialogContent className="font-raleway">
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="text-sm">
-                    Are you absolutely sure?
-                  </AlertDialogTitle>
-                  <AlertDialogDescription className="text-sm">
-                    This action cannot be undone. This will permanently delete
-                    this product.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-
-                <AlertDialogFooter className="font-raleway">
-                  <AlertDialogCancel className="text-xs!">
-                    Cancel
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleDelete}
-                    disabled={isPending}
-                    className="bg-red-600 text-xs! hover:bg-red-700"
-                  >
-                    {isPending ? "Deleting..." : "Delete"}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-
-            <Link href={`/manage-product/${data.id}`}>
-              <span className="bg-primary hover:bg-accent flex cursor-pointer gap-1 rounded-full px-4 py-2">
-                <EditIcon className="size-4 text-green-600" />
-                <p className="text-[10px] md:text-xs">edit</p>
-              </span>
-            </Link>
-          </div>
+              </Link>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
