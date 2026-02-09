@@ -32,9 +32,7 @@ export default function Login() {
         dispatch(setCredentials({ userInfo: data.user }));
         toast.success("login successful");
         formik.resetForm();
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 800);
+        router.push("/dashboard");
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "login failed";
         toast.error(message);
