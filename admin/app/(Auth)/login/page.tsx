@@ -1,21 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { loginInitialValues, User } from "@/types/types";
+import { loginInitialValues } from "@/types/types";
 import { setCredentials } from "@/store/features/authSlice";
-import { useSignIn } from "@/hooks/auth";
+import { useAdminSignIn } from "@/hooks/auth";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import GoogleLoginButton from "@/components/GoogleLoginButton";
 
 export default function Login() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { mutateAsync, isPending } = useSignIn();
+  const { mutateAsync, isPending } = useAdminSignIn();
 
   const initialValues: loginInitialValues = {
     email: "",
@@ -61,13 +59,6 @@ export default function Login() {
             welcome to gamify store, login to continue.
           </p>
         </div>
-        <GoogleLoginButton
-          onLogin={(user: User) => {
-            dispatch(setCredentials({ userInfo: user }));
-            toast.success("Google login successful");
-            router.push("/dashboard");
-          }}
-        />
         <div>
           <label htmlFor="email" className="text-xs font-semibold md:text-sm">
             email
@@ -124,13 +115,6 @@ export default function Login() {
             "login"
           )}
         </button>
-        <Link
-          href="/signup"
-          className="flex items-center justify-center gap-1 text-xs font-semibold lowercase md:text-sm"
-        >
-          Don&apos;t have an account ?{" "}
-          <span className="text-blue-500">sign up</span>
-        </Link>
       </form>
     </div>
   );

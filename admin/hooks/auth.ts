@@ -1,17 +1,11 @@
-import { signIn, signOut, signUp, checkAuth } from "@/lib/api/auth.api";
+import { signOut, checkAuth, adminSignIn } from "@/lib/api/auth.api";
 import { setLogout } from "@/store/features/authSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useSignIn = () => {
+export const useAdminSignIn = () => {
   return useMutation({
-    mutationFn: signIn,
-  });
-};
-
-export const useSignUp = () => {
-  return useMutation({
-    mutationFn: signUp,
+    mutationFn: adminSignIn,
   });
 };
 
