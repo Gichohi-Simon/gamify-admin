@@ -6,6 +6,8 @@ import {
   banUserFromPlatform,
   restoreBannedUser,
   makeUserAnAdmin,
+  makeUserAnEmployee,
+  removeUserAsAnEmployee,
   revokeUserAdminPriviledge,
 } from "@/lib/api/user.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -76,6 +78,26 @@ export const useRevokeUserAsAdmin = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: revokeUserAdminPriviledge,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+export const useMakeUserAnEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: makeUserAnEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+export const useRemoveUserAsAnEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: removeUserAsAnEmployee,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },

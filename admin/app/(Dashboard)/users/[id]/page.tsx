@@ -7,6 +7,8 @@ import {
   useRestoreBannedUser,
   useMakeUserAnAdmin,
   useRevokeUserAsAdmin,
+  useMakeUserAnEmployee,
+  useRemoveUserAsAnEmployee,
 } from "@/hooks/user";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,11 +23,14 @@ export default function UserDetails() {
 
   const [adminLoading, setAdminLoading] = useState(false);
   const [banLoading, setBanLoading] = useState(false);
+  const [employeeLoading, setEmployeeLoading] = useState(false);
 
   const makeAdminMutation = useMakeUserAnAdmin();
   const revokeAdminMutation = useRevokeUserAsAdmin();
   const banUserMutation = useBanUserFromPlatform();
   const restoreUserMutation = useRestoreBannedUser();
+  const makeUserEmployeeMutation = useMakeUserAnEmployee();
+  const revokeEmployeeMutation = useRemoveUserAsAnEmployee();
 
   if (isLoading)
     return (
@@ -61,6 +66,20 @@ export default function UserDetails() {
       await refetch();
     } finally {
       setAdminLoading(false);
+    }
+  };
+
+  const toggleEmployee = async () => {
+    setEmployeeLoading(true);
+    try {
+      if (user.role === "EMPLOYEE") {
+        await revokeEmployeeMutation.mutateAsync(user.id);
+      } else {
+        await makeUserEmployeeMutation.mutateAsync(user.id);
+      }
+      await refetch();
+    } finally {
+      setEmployeeLoading(false);
     }
   };
 
@@ -126,6 +145,25 @@ export default function UserDetails() {
                 : user.role === "ADMIN"
                   ? "Remove Admin"
                   : "Make Admin"}
+            </button>
+          </p>
+          <p className="flex items-center gap-2">
+            <span className="font-semibold">Employee:</span>{" "}
+            {user.role === "EMPLOYEE" ? "Yes" : "No"}
+            <button
+              onClick={toggleEmployee}
+              disabled={employeeLoading}
+              className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
+                user.role === "EMPLOYEE"
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-green-500 hover:bg-green-600"
+              } transition-colors duration-200`}
+            >
+              {employeeLoading
+                ? "Processing..."
+                : user.role === "EMPLOYEE"
+                  ? "Remove Employee"
+                  : "Make Employee"}
             </button>
           </p>
           <p className="flex items-center gap-2">

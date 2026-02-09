@@ -120,3 +120,35 @@ export const revokeUserAdminPriviledge = async (
   const data: { user: UserData } = await response.json();
   return data.user;
 };
+
+export const makeUserAnEmployee = async (id: string): Promise<UserData> => {
+  const response = await fetch(`${API}/users/makeEmployee/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to make user an employee",
+    );
+  }
+  const data: { user: UserData } = await response.json();
+  return data.user;
+};
+
+export const removeUserAsAnEmployee = async (id: string): Promise<UserData> => {
+  const response = await fetch(`${API}/users/removeEmployee/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.error || error.message || "failed to remove user as an employee",
+    );
+  }
+  const data: { user: UserData } = await response.json();
+  return data.user;
+};
