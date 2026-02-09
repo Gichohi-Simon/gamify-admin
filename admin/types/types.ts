@@ -29,7 +29,7 @@ export interface userState {
 }
 
 export interface AuthState {
-  userInfo: userState | null;
+  userInfo: User | null;
   initialized: boolean;
 }
 

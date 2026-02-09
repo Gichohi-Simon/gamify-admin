@@ -27,13 +27,18 @@ export function Header() {
   };
 
   return (
-    <header className="bg-primary flex h-14 items-center justify-between border-b px-4">
+    <header className="bg-primary flex h-16 items-center justify-between border-b px-4">
       <div className="flex items-center gap-2">
         <SidebarMobile />
         <div className="hidden flex-col md:flex">
-          <span className="font-raleway text-sm font-bold tracking-wider capitalize md:text-base">
-            {user?.username}
-          </span>
+          <div className="flex items-center justify-center">
+            <span className="font-raleway text-sm font-bold tracking-wider capitalize md:text-base">
+              {user?.username}
+            </span>
+            <span className="font-raleway ml-2 rounded-full bg-green-500 px-4 py-1 text-[9px] tracking-wider capitalize">
+              {user?.role}
+            </span>
+          </div>
           <span className="font-raleway text-xs">{user?.email}</span>
         </div>
       </div>

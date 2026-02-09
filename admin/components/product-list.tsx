@@ -5,23 +5,29 @@ import Image from "next/image";
 import { EyeIcon, PlusCircleIcon } from "lucide-react";
 import { ProductInterface } from "@/types/types";
 import SectionTitle from "./section-title";
+import { useAppSelector } from "@/store/hooks";
 
 export default function ProductList({
   products,
 }: {
   products: ProductInterface[];
 }) {
+  const user = useAppSelector((state) => state?.auth.userInfo);
   return (
     <div className="mt-6 md:mt-6">
       <div className="flex justify-between px-5">
         <SectionTitle>products</SectionTitle>
-        <Link
-          href="/manage-product"
-          className="font-raleways bg-primary flex items-center justify-between gap-2 rounded px-2 py-2 lowercase"
-        >
-          <PlusCircleIcon className="h-4 w-4" />
-          <p className="text-xs">create product</p>
-        </Link>
+        {user?.role === "ADMIN" ? (
+          <Link
+            href="/manage-product"
+            className="font-raleways bg-primary flex items-center justify-between gap-2 rounded px-2 py-2 lowercase"
+          >
+            <PlusCircleIcon className="h-4 w-4" />
+            <p className="text-xs">create product</p>
+          </Link>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="flex justify-center">
