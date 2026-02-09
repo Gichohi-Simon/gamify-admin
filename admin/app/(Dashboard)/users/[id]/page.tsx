@@ -13,8 +13,10 @@ import {
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeftCircle } from "lucide-react";
+import { useAppSelector } from "@/store/hooks";
 
 export default function UserDetails() {
+  const currentUser = useAppSelector((state) => state?.auth.userInfo);
   const params = useParams();
   const id = params.id as string;
   const router = useRouter();
@@ -131,55 +133,67 @@ export default function UserDetails() {
           <p className="flex items-center gap-2">
             <span className="font-semibold">Admin:</span>{" "}
             {user.role === "ADMIN" ? "Yes" : "No"}
-            <button
-              onClick={toggleAdmin}
-              disabled={adminLoading}
-              className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
-                user.role === "ADMIN"
-                  ? "bg-red-500 hover:bg-red-600"
-                  : "bg-green-500 hover:bg-green-600"
-              } transition-colors duration-200`}
-            >
-              {adminLoading
-                ? "Processing..."
-                : user.role === "ADMIN"
-                  ? "Remove Admin"
-                  : "Make Admin"}
-            </button>
+            {currentUser?.role === "ADMIN" ? (
+              <button
+                onClick={toggleAdmin}
+                disabled={adminLoading}
+                className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
+                  user.role === "ADMIN"
+                    ? "bg-red-500 hover:bg-red-600"
+                    : "bg-green-500 hover:bg-green-600"
+                } transition-colors duration-200`}
+              >
+                {adminLoading
+                  ? "Processing..."
+                  : user.role === "ADMIN"
+                    ? "Remove Admin"
+                    : "Make Admin"}
+              </button>
+            ) : (
+              <></>
+            )}
           </p>
           <p className="flex items-center gap-2">
             <span className="font-semibold">Employee:</span>{" "}
             {user.role === "EMPLOYEE" ? "Yes" : "No"}
-            <button
-              onClick={toggleEmployee}
-              disabled={employeeLoading}
-              className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
-                user.role === "EMPLOYEE"
-                  ? "bg-red-500 hover:bg-red-600"
-                  : "bg-green-500 hover:bg-green-600"
-              } transition-colors duration-200`}
-            >
-              {employeeLoading
-                ? "Processing..."
-                : user.role === "EMPLOYEE"
-                  ? "Remove Employee"
-                  : "Make Employee"}
-            </button>
+            {currentUser?.role === "ADMIN" ? (
+              <button
+                onClick={toggleEmployee}
+                disabled={employeeLoading}
+                className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
+                  user.role === "EMPLOYEE"
+                    ? "bg-red-500 hover:bg-red-600"
+                    : "bg-green-500 hover:bg-green-600"
+                } transition-colors duration-200`}
+              >
+                {employeeLoading
+                  ? "Processing..."
+                  : user.role === "EMPLOYEE"
+                    ? "Remove Employee"
+                    : "Make Employee"}
+              </button>
+            ) : (
+              <></>
+            )}
           </p>
           <p className="flex items-center gap-2">
             <span className="font-semibold">Banned:</span>{" "}
             {user.isBanned ? "Yes" : "No"}
-            <button
-              onClick={toggleBan}
-              disabled={banLoading}
-              className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
-                user.isBanned
-                  ? "bg-green-500 hover:bg-green-600"
-                  : "bg-red-500 hover:bg-red-600"
-              } transition-colors duration-200`}
-            >
-              {banLoading ? "Processing..." : user.isBanned ? "Unban" : "Ban"}
-            </button>
+            {currentUser?.role === "ADMIN" ? (
+              <button
+                onClick={toggleBan}
+                disabled={banLoading}
+                className={`ml-2 rounded-full px-2 py-1 text-xs text-white sm:text-[10px] ${
+                  user.isBanned
+                    ? "bg-green-500 hover:bg-green-600"
+                    : "bg-red-500 hover:bg-red-600"
+                } transition-colors duration-200`}
+              >
+                {banLoading ? "Processing..." : user.isBanned ? "Unban" : "Ban"}
+              </button>
+            ) : (
+              <></>
+            )}
           </p>
           <p>
             <span className="font-semibold">Active:</span>{" "}
