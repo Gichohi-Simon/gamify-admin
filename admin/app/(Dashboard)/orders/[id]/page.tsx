@@ -7,6 +7,7 @@ import {
   useGetUserOrderById,
   useMarkOrderAsDelivered,
   useMarkOrderAsPaid,
+  useGetInvoice,
 } from "@/hooks/order";
 import { OrderItem } from "@/types/types";
 import {
@@ -16,6 +17,7 @@ import {
   Check,
   X,
   Loader2,
+  FileText,
 } from "lucide-react";
 
 export default function OrderDetailsPage() {
@@ -33,6 +35,28 @@ export default function OrderDetailsPage() {
     useMarkOrderAsDelivered();
 
   const { mutateAsync: markPaid, isPending: paying } = useMarkOrderAsPaid();
+
+  const {
+    refetch: fetchInvoice,
+    isFetching: invoiceLoading,
+    isError: invoiceError,
+    error: invoiceErrorObj,
+  } = useGetInvoice(orderId);
+
+  const handleViewInvoice = async () => {
+    try {
+      const result = await fetchInvoice();
+      const blob = result.data;
+      if (!blob) return;
+
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, "_blank", "noopener,noreferrer");
+
+      setTimeout(() => window.URL.revokeObjectURL(url), 60_000);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   if (isLoading)
     return (
@@ -106,6 +130,29 @@ export default function OrderDetailsPage() {
                   <span className="text-xs md:text-sm">
                     KSh {Number(singleOrder.totalPrice).toLocaleString()}
                   </span>
+                </div>
+
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    onClick={handleViewInvoice}
+                    disabled={invoiceLoading}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-70 md:text-xs"
+                  >
+                    {invoiceLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <FileText className="h-4 w-4" />
+                    )}
+                    {invoiceLoading ? "Generating..." : "View Invoice (PDF)"}
+                  </button>
+
+                  {invoiceError && (
+                    <p className="mt-2 text-[10px] text-red-600 md:text-xs">
+                      {(invoiceErrorObj as Error)?.message ||
+                        "Failed to fetch invoice"}
+                    </p>
+                  )}
                 </div>
 
                 <div className="mt-4 flex flex-wrap gap-2">

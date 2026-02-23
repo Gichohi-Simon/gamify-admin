@@ -6,6 +6,7 @@ import {
   getTotalSales,
   markOrderAsDelivered,
   markOrderAsPaid,
+  getInvoice,
 } from "@/lib/api/order.api";
 
 export const useGetAllOrders = () => {
@@ -35,6 +36,16 @@ export const useGetTotalSales = () => {
   return useQuery({
     queryKey: ["totalSales"],
     queryFn: getTotalSales,
+  });
+};
+
+export const useGetInvoice = (id: string) => {
+  return useQuery({
+    queryKey: ["invoice", id],
+    queryFn: () => getInvoice(id),
+    enabled: false,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 };
 

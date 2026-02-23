@@ -1,4 +1,5 @@
 import { OrderInterface, Order } from "@/types/types";
+import { ErrorMessage } from "formik";
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 export const getAllOrders = async (): Promise<OrderInterface[]> => {
@@ -81,4 +82,22 @@ export const markOrderAsPaid = async (id: string): Promise<Order> => {
   }
   const data: { paidProduct: Order } = await response.json();
   return data.paidProduct;
+};
+
+export const getInvoice = async (id: string) => {
+  const response = await fetch(`${API}/order/invoice/${id}`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    let errorMessage = "Failed to generate invoice";
+
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || ErrorMessage;
+    } catch {}
+    throw new Error(errorMessage);
+  }
+  const blob = await response.blob();
+  return blob;
 };
